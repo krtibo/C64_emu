@@ -27,8 +27,6 @@ void Debugger::init() {
         cout << TTF_GetError() << endl;
         return;
     }
-
-
 }
 
 void Debugger::run() {
