@@ -17,6 +17,8 @@ void Debugger::init() {
         texWidth, texHeight);
     
     pixels = new vector<unsigned char>(texWidth * texHeight * 4, 0);
+    lines_to_render = new vector<char*>(rendered_line_amount, "lel");
+    lines_to_render->at(0) = "asdtopkekvalamiasdtopkekvalamiasdtopkekvalamiasdtopkekvalamiasdtopkekvalamiasdtopkekvala";
 
     if (TTF_Init() < 0) 
         cout << "Could not initialize SDL_TTF library." << endl;
@@ -35,7 +37,7 @@ void Debugger::run() {
     char* text = "This is a very long ass message to showcase multiline text.";
     SDL_Rect message_rect; 
     SDL_Surface* message_surface = NULL;
-    SDL_Texture* messages[50] = { NULL };
+    SDL_Texture* messages[rendered_line_amount] = { NULL };
 
     while (running) {
 
@@ -52,16 +54,18 @@ void Debugger::run() {
             }
 
             if (event.type == SDL_MOUSEWHEEL) {
-                if (event.wheel.y > 0) {
+                if (event.wheel.y > 0 && selected_row > 0) {
                     selected_row--;
-                } else if (event.wheel.y < 0) {
+                    cout << strlen(lines_to_render->at(selected_row)) << endl;
+                } else if (event.wheel.y < 0 && selected_row < rendered_line_amount-1) {
                     selected_row++;
+                    cout << strlen(lines_to_render->at(selected_row)) << endl;
                 }
             }
         }
 
         // splat down some random pixels
-        for (unsigned int i = 0; i < 1000; i++) {
+/*         for (unsigned int i = 0; i < 1000; i++) {
             const unsigned int x = rand() % texWidth;
             const unsigned int y = rand() % texHeight;
 
@@ -70,17 +74,23 @@ void Debugger::run() {
             pixels->at(offset + 1) = rand() % 256;      // g
             pixels->at(offset + 2) = rand() % 256;      // r
             pixels->at(offset + 3) = SDL_ALPHA_OPAQUE;  // a
-        } 
+        }  */
 
         SDL_UpdateTexture(texture, NULL, &pixels->at(0), texWidth * 4);
         SDL_RenderCopy(renderer, texture, NULL, NULL ); 
 
-        for (int i=0; i<50; ++i) {
+        for (int i=0; i<rendered_line_amount; ++i) {
+
+            if (strlen(lines_to_render->at(i)) > rendered_line_length) {
+                
+            }
 
             if (i == selected_row)
-                message_surface = TTF_RenderText_Solid(font, text, Red);
+                message_surface = 
+                    TTF_RenderText_Solid(font, lines_to_render->at(i), Red);
             else 
-                message_surface = TTF_RenderText_Solid(font, text, Black);
+                message_surface = 
+                    TTF_RenderText_Solid(font, lines_to_render->at(i), White);
 
             message_rect.w = message_surface->w; 
             message_rect.h = message_surface->h; 

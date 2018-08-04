@@ -21,8 +21,12 @@ class Debugger {
     const unsigned int texHeight = 200;
     vector<unsigned char>* pixels;
     SDL_Color Black = {0, 0, 0};
+    SDL_Color White = {255, 255, 255};
     SDL_Color Red = {255, 0, 0};
     int selected_row = 0;
+    const uint8_t rendered_line_amount = 50;
+    const uint8_t rendered_line_length = 50;
+    vector<char*>* lines_to_render;
 
     public:
 
