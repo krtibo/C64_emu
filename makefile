@@ -1,15 +1,15 @@
 #OBJS specifies which files to compile as part of the project
-OBJS = src/main.cpp src/cpu.cpp src/mmu.cpp src/debugger.cpp
+OBJS = src/main.cpp src/cpu.cpp src/mmu.cpp src/debugger.cpp src/opcode.cpp
 
 #CC specifies which compiler we're using
 CC = g++
 
 #COMPILER_FLAGS specifies the additional compilation options we're using
 # -w suppresses all warnings
-COMPILER_FLAGS = -w
+COMPILER_FLAGS = -w -std=gnu++11 -lpthread
 
 #LINKER_FLAGS specifies the libraries we're linking against
-LINKER_FLAGS = -lSDL2_ttf -lSDL2
+LINKER_FLAGS = -lSDL2_ttf -lSDL2 
 
 #OBJ_NAME specifies the name of our exectuable
 OBJ_NAME = c64_emu
