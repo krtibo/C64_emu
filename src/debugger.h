@@ -34,6 +34,7 @@ class Debugger {
 
     public:
     vector<char*>* lines_to_render;
+    vector<char*>* lines_pool;
     void init();
     void run();
     bool render();

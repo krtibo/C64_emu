@@ -18,6 +18,8 @@ void Debugger::init() {
     
     pixels = new vector<unsigned char>(texture_width * texture_height * 4, 0);
     lines_to_render = new vector<char*>(rendered_line_amount, " ");
+    lines_pool = new vector<char*>();
+
 
     if (TTF_Init() < 0) 
         cout << "Could not initialize SDL_TTF library." << endl;
@@ -31,6 +33,17 @@ void Debugger::init() {
 }
 
 bool Debugger::render() {
+
+    // copy the last 50 items from the lines pool vector 
+    // to the rendered lines vector
+    for (unsigned int i=0; i < rendered_line_amount; ++i) {
+        if (i < lines_pool->size()) {
+            lines_to_render->at(i) = lines_pool->at(lines_pool->size()-i-1);
+        } else {
+            break;
+        }
+    }
+
     
     SDL_Rect message_rect; 
     SDL_Surface* message_surface = NULL;
@@ -82,10 +95,12 @@ bool Debugger::render() {
         message_rect.x = textbox_x + 0;  
         message_rect.y = textbox_y + i*font_size; 
         messages[i] = SDL_CreateTextureFromSurface(renderer, message_surface);
+        
 
         SDL_FreeSurface(message_surface);
         SDL_RenderCopy(renderer, messages[i], NULL, &message_rect);
         SDL_DestroyTexture(messages[i]);
+
     }
 
     SDL_RenderPresent(renderer);

@@ -20,14 +20,21 @@ int main( int argc, char** argv ){
 
     debugger->init();
 
+    debugger->lines_pool->push_back("wow");
+    debugger->lines_pool->push_back("yay");
+    debugger->lines_pool->push_back("kek");
+    debugger->lines_pool->push_back("lol");
+    debugger->lines_pool->push_back(opcode->last_opcode);
+    debugger->lines_pool->push_back(str);
+
     while(debugger->render()) {
         sprintf(str, "%d", counter);
-        debugger->lines_to_render->at(0) = str;
-        debugger->lines_to_render->at(1) = opcode->last_opcode;
+        
+        debugger->lines_pool->at(debugger->lines_pool->size()-1) = str;
+        debugger->lines_pool->at(debugger->lines_pool->size()-2) = opcode->last_opcode;
         ++counter;
     }
 
-    
     delete cpu;
     delete mmu;
     delete debugger;
